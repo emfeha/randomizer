@@ -1,0 +1,26 @@
+{
+  "compatibleVersion": 3,
+  "bundleVersion": 1,
+  "icon": "icon.png",
+  "commands": [
+    {
+      "name": "randomizer",
+      "identifier": "randomizer.my-command-identifier",
+      "script": "my-command.js"
+    }
+  ],
+  "menu": {
+    "title": "randomizer",
+    "items": [
+      "randomizer.my-command-identifier"
+    ]
+  },
+  "version": "0.1.0",
+  "description": "",
+  "name": "randomizer",
+  "identifier": "randomizer",
+  "disableCocoaScriptPreprocessor": true,
+  "appcast": "https://raw.githubusercontent.com//master/.appcast.xml",
+  "author": "Milan Zivkovic",
+  "authorEmail": "supaherohq@gmail.com"
+}
