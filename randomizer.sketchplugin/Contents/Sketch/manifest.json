@@ -20,7 +20,7 @@
   "name": "randomizer",
   "identifier": "randomizer",
   "disableCocoaScriptPreprocessor": true,
-  "appcast": "https://raw.githubusercontent.com//master/.appcast.xml",
+  "appcast": "https://raw.githubusercontent.com/emfeha/randomizer/master/.appcast.xml",
   "author": "Milan Zivkovic",
   "authorEmail": "supaherohq@gmail.com"
 }
