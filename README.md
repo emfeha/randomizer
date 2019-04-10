@@ -1,5 +1,8 @@
 # symbol-generator
 
+## Description
+Randomize your symbols
+
 ## Installation
 
 - [Download](./releases/download/latest/symbol-generator.sketchplugin.zip) the latest release of the plugin
