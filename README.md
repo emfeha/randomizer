@@ -1,4 +1,4 @@
-# symbol-generator
+# Randomizer
 
 ## Description
 Randomize your symbols
