@@ -1,12 +1,12 @@
 {
-  "name": "randomizer",
+  "name": "Randomizer",
   "description": "Randomize your symbols",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "engines": {
     "sketch": ">=49.0"
   },
   "skpm": {
-    "name": "randomizer",
+    "name": "Randomizer",
     "manifest": "src/manifest.json",
     "main": "randomizer.sketchplugin",
     "assets": [
@@ -20,12 +20,18 @@
     "postinstall": "npm run build && skpm-link"
   },
   "devDependencies": {
-    "@skpm/builder": "^0.5.11"
+    "@skpm/builder": "^0.5.11",
+    "@skpm/extract-loader": "^2.0.2",
+    "css-loader": "^1.0.0",
+    "html-loader": "^0.5.1"
   },
   "author": "Milan Zivkovic <supaherohq@gmail.com>",
   "dependencies": {
     "sketch-module-web-view": "^3.0.1"
   },
+  "resources": [
+    "resources/**/*.js"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/emfeha/randomizer.git"

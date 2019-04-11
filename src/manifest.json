@@ -4,15 +4,21 @@
   "icon": "icon.png",
   "commands": [
     {
-      "name": "randomizer",
+      "name": "Randomizer",
       "identifier": "randomizer.my-command-identifier",
       "script": "./my-command.js"
+    },
+    {
+      "name": "I'm feeling lucky",
+      "identifier": "feeling-lucky.my-command-identifier",
+      "script": "./feeling-lucky.js"
     }
   ],
   "menu": {
-    "title": "randomizer",
+    "title": "Randomizer",
     "items": [
-      "randomizer.my-command-identifier"
+      "randomizer.my-command-identifier",
+      "feeling-lucky.my-command-identifier"
     ]
   }
 }
