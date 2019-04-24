@@ -86,7 +86,7 @@ var exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/my-command.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/randomizer.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -2538,13 +2538,13 @@ module.exports = function buildAPI(browserWindow, panel, webview) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "file://" + context.plugin.urlForResourceNamed("_webpack_resources/d27afee6aaa89fb41f8c57815fc70d00.html").path();
+module.exports = "file://" + context.plugin.urlForResourceNamed("_webpack_resources/cd625bbbf10dc9bc27cd5b786160201c.html").path();
 
 /***/ }),
 
-/***/ "./src/my-command.js":
+/***/ "./src/randomizer.js":
 /*!***************************!*\
-  !*** ./src/my-command.js ***!
+  !*** ./src/randomizer.js ***!
   \***************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -2559,15 +2559,11 @@ var UI = __webpack_require__(/*! sketch/ui */ "sketch/ui");
 
 
 var document = sketch.getSelectedDocument();
-var page = document.selectedPage;
 var selectedLayers = document.selectedLayers;
 var selectedCount = selectedLayers.length;
 var symbols = document.getSymbols();
 /* harmony default export */ __webpack_exports__["default"] = (function () {
   if (!selectedCount) {
-    // webContents
-    //     .executeJavaScript(displayMessage("Please select symbol you want to randomize1"))
-    //     .catch(console.error);
     UI.message('Please select symbol you want to randomize');
     return;
   }
@@ -2588,15 +2584,12 @@ var symbols = document.getSymbols();
     });
   });
   webContents.on('randomize-single', function (o) {
-    // randomize selected
-    UI.message(o);
     selectedLayers.forEach(function (layer) {
       randomizeOverridableLayer(layer, o);
       getOverridePositions(layer);
     });
   });
   webContents.on('randomize-all', function () {
-    UI.message('rabndomize all');
     selectedLayers.forEach(function (layer) {
       randomizeOverridableLayers(layer);
       getOverridePositions(layer);
@@ -2611,8 +2604,7 @@ var symbols = document.getSymbols();
     if (!selectedCount) {
       UI.message('select symbol!');
       webContents.executeJavaScript("displayMessage('Please select symbol')").catch(console.error);
-    } // UI.message('in focus');
-
+    }
 
     selectedLayers.forEach(function (layer) {
       getOverridePositions(layer);
@@ -2620,9 +2612,7 @@ var symbols = document.getSymbols();
   });
 
   function getOverridePositions(s) {
-    // UI.message('get positions');
-    var positions = []; // let symbol = createSymbol(s);
-
+    var positions = [];
     s.overrides.forEach(function (item) {
       if (item.editable) {
         positions.push(item.affectedLayer.name);
@@ -2721,4 +2711,4 @@ module.exports = require("sketch/ui");
 }
 that['onRun'] = __skpm_run.bind(this, 'default')
 
-//# sourceMappingURL=my-command.js.map
+//# sourceMappingURL=randomizer.js.map
