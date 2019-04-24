@@ -2538,7 +2538,7 @@ module.exports = function buildAPI(browserWindow, panel, webview) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "file://" + context.plugin.urlForResourceNamed("_webpack_resources/0fe8955eb48c4f2468f6f055c5527d8a.html").path();
+module.exports = "file://" + context.plugin.urlForResourceNamed("_webpack_resources/d27afee6aaa89fb41f8c57815fc70d00.html").path();
 
 /***/ }),
 
@@ -2564,101 +2564,95 @@ var selectedLayers = document.selectedLayers;
 var selectedCount = selectedLayers.length;
 var symbols = document.getSymbols();
 /* harmony default export */ __webpack_exports__["default"] = (function () {
+  if (!selectedCount) {
+    // webContents
+    //     .executeJavaScript(displayMessage("Please select symbol you want to randomize1"))
+    //     .catch(console.error);
+    UI.message('Please select symbol you want to randomize');
+    return;
+  }
+
   var options = {
-    identifier: 'unique.id',
+    identifier: 'randomizer',
+    y: -100,
+    x: 350,
     width: 300,
     height: 400,
-    titleBarStyle: 'hiddenInset'
+    alwaysOnTop: true
   };
   var browserWindow = new sketch_module_web_view__WEBPACK_IMPORTED_MODULE_0___default.a(options);
   var webContents = browserWindow.webContents;
-  var availableSymbolNames = [];
-  var availableSymbols = [];
-
-  function getAvailableSymbols() {
-    if (selectedCount) {
-      availableSymbolNames.push('Selected symbol');
-    }
-
-    symbols.forEach(function (symbol) {
-      availableSymbolNames.push(symbol.name);
-      availableSymbols.push({
-        name: symbol.name,
-        symbolId: symbol.symbolId
-      });
-    });
-  }
-
   webContents.on('did-finish-load', function () {
-    UI.message('Initial');
-    getAvailableSymbols();
-    webContents.executeJavaScript("populateSelect(\"".concat(availableSymbolNames, "\")")).catch(console.error);
+    selectedLayers.forEach(function (layer) {
+      getOverridePositions(layer);
+    });
   });
-  webContents.on('add-to-document', function (o, s) {
-    UI.message(s);
-
-    if (s === 'Selected symbol') {
-      selectedLayers.forEach(function (layer) {
-        randomizeOverridableLayers(layer, o);
-      });
-    } else {
-      var ns = createSymbol(s);
-      var os = insertSymbol(ns);
-      randomizeOverridableLayers(os, o);
-    }
+  webContents.on('randomize-single', function (o) {
+    // randomize selected
+    UI.message(o);
+    selectedLayers.forEach(function (layer) {
+      randomizeOverridableLayer(layer, o);
+      getOverridePositions(layer);
+    });
   });
-  webContents.on('close', function () {
-    closeWindow();
-  });
-  webContents.on('select-symbol', function (s) {
-    getOverridePositions(s);
+  webContents.on('randomize-all', function () {
+    UI.message('rabndomize all');
+    selectedLayers.forEach(function (layer) {
+      randomizeOverridableLayers(layer);
+      getOverridePositions(layer);
+    });
   });
   browserWindow.loadURL(__webpack_require__(/*! ../resources/webview.html */ "./resources/webview.html"));
+  browserWindow.on('focus', function () {
+    selectedLayers = document.selectedLayers;
+    selectedCount = selectedLayers.length;
+    UI.message(selectedCount);
 
-  function createSymbol(selectedSymbol) {
-    var index = availableSymbolNames.indexOf(selectedSymbol);
-    var symbolId = availableSymbols[index].symbolId;
-    var symbolMaster = document.getSymbolMasterWithID(symbolId);
-    return symbolMaster;
-  }
+    if (!selectedCount) {
+      UI.message('select symbol!');
+      webContents.executeJavaScript("displayMessage('Please select symbol')").catch(console.error);
+    } // UI.message('in focus');
 
-  function insertSymbol(symbolMaster) {
-    var instance = symbolMaster.createNewInstance();
-    var inserted = new sketch.SymbolInstance({
-      name: instance.name + ' Randomized',
-      parent: page,
-      symbolId: instance.symbolId,
-      selected: true
+
+    selectedLayers.forEach(function (layer) {
+      getOverridePositions(layer);
     });
-    inserted.frame.width = instance.frame.width;
-    inserted.frame.height = instance.frame.height;
-    return inserted;
-  }
+  });
 
   function getOverridePositions(s) {
-    UI.message('get positions');
-    var positions = [];
-    var symbol = createSymbol(s);
-    symbol.overrides.forEach(function (item) {
+    // UI.message('get positions');
+    var positions = []; // let symbol = createSymbol(s);
+
+    s.overrides.forEach(function (item) {
       if (item.editable) {
         positions.push(item.affectedLayer.name);
       }
     });
+    webContents.executeJavaScript("displaySelectedSymbol(\"".concat(s.name, "\")")).catch(console.error);
     webContents.executeJavaScript("displayOverridePositions(\"".concat(positions, "\")")).catch(console.error);
   }
 
-  function randomizeOverridableLayers(master, overrides) {
-    overrides.forEach(function (override) {
-      master.overrides.forEach(function (item) {
-        if (item.affectedLayer.name == override) {
-          console.log(item.affectedLayer.name);
-          var random = getRandomOverride(item.affectedLayer.name);
+  function randomizeOverridableLayer(master, override) {
+    master.overrides.forEach(function (item) {
+      if (item.affectedLayer.name === override) {
+        var random = getRandomOverride(item.affectedLayer.name);
 
-          if (random) {
-            item.value = random.symbolId;
-          }
+        if (random) {
+          item.value = random.symbolId;
         }
-      });
+      }
+    });
+  }
+
+  function randomizeOverridableLayers(master) {
+    master.overrides.forEach(function (item) {
+      if (item.editable) {
+        var random = getRandomOverride(item.affectedLayer.name);
+
+        if (random) {
+          item.value = random.symbolId;
+        }
+      }
     });
   }
 
@@ -2680,10 +2674,6 @@ var symbols = document.getSymbols();
     }
 
     return item;
-  }
-
-  function closeWindow() {
-    browserWindow.destroy();
   }
 });
 

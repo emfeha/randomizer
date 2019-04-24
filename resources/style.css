@@ -33,11 +33,72 @@ label {
 
 body {
   background-color: #5aaeda;
-  color: #fff;
-  padding: 40px 16px;
+  color: #333;
+  font-family: 'Helvetica Neue', sans-serif;
+  padding: 16px;
 }
 
 #symbols {
-  max-height: 300px;
+  max-height: 180px;
   overflow-y: auto;
+}
+
+#message {
+  background: #fff;
+  color: #ff214b;
+  display: none;
+  padding: 10px;
+}
+
+#debug {
+  word-wrap: break-word;
+}
+
+.item {
+  background: rgba(255, 255, 255, .2);
+  clear: both;
+  cursor: pointer;
+  line-height: 32px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  padding: 5px;
+  text-transform: capitalize;
+}
+
+.button {
+  background: url("../assets/icon-randomize.png");
+  border: none;
+  float: right;
+  height: 32px;
+  width: 32px;
+}
+
+.button:active {
+  opacity: .5;
+}
+
+.button--block {
+  float: none;
+  width: 100%;
+}
+
+#separator {
+  border-top: 1px solid #333;
+  margin: 20px 0;
+  position: relative;
+  text-align: center;
+}
+
+#separator span {
+  background-color: #5aaeda;
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  margin-left: -20px;
+  top: -20px;
+  padding: 10px;
+}
+
+p {
+  margin-bottom: 10px;
 }

@@ -97,66 +97,53 @@
 document.addEventListener("contextmenu", function (e) {
   e.preventDefault();
 });
-document.getElementById('select').addEventListener('change', function () {
-  var msg = document.getElementById("select").value;
-  window.postMessage('select-symbol', msg);
-});
 document.getElementById('button').addEventListener('click', function () {
-  var selectedOverrides = printChecked();
-  var symbol = document.getElementById("select").value;
-  window.postMessage('add-to-document', selectedOverrides, symbol);
-}); // called from the plugin
+  window.postMessage('randomize-all');
+});
 
-window.populateSelect = function (options) {
-  var items = stringToArray(options);
-
-  for (var i = 0; i < items.length; i++) {
-    var opt = items[i];
-    var el = document.createElement("option");
-    el.textContent = opt;
-    el.value = opt;
-    document.getElementById('select').appendChild(el);
-  }
-
-  window.postMessage('select-symbol', items[0]);
+window.displaySelectedSymbol = function (symbol) {
+  document.getElementById('selected').innerHTML = symbol;
 };
 
 window.displayOverridePositions = function (positions) {
+  document.getElementById('message').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
   var availableOverrides = document.getElementById('symbols');
   availableOverrides.innerHTML = '';
   var items = stringToArray(positions);
 
   for (var i = 0; i < items.length; i++) {
-    var item = makeCheckboxButton("check[]", items[i], items[i]);
+    var item = makeItem(items[i]);
     availableOverrides.appendChild(item);
+    createListener(item, items[i]);
   }
 };
+
+window.displayMessage = function (message) {
+  document.getElementById('message').innerHTML = message;
+  document.getElementById('message').style.display = 'block';
+  document.getElementById('content').style.display = 'none';
+};
+
+function createListener(item, override) {
+  item.addEventListener('click', function () {
+    window.postMessage('randomize-single', override);
+  });
+}
 
 function stringToArray(string) {
   return string.split(',');
 }
 
-function makeCheckboxButton(name, value, text) {
-  var label = document.createElement("label");
-  var checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.name = name;
-  checkbox.value = value;
-  checkbox.checked = true;
-  label.appendChild(checkbox);
-  label.appendChild(document.createTextNode(text));
-  return label;
-}
-
-function printChecked() {
-  var items = document.getElementsByName('check[]');
-  var selectedItems = [];
-
-  for (var i = 0; i < items.length; i++) {
-    if (items[i].type == 'checkbox' && items[i].checked == true) selectedItems.push(items[i].value);
-  }
-
-  return selectedItems;
+function makeItem(text) {
+  var item = document.createElement("div");
+  item.className = 'item';
+  var button = document.createElement("button");
+  button.id = text;
+  button.className = 'button';
+  item.appendChild(document.createTextNode(text));
+  item.appendChild(button);
+  return item;
 }
 
 /***/ })

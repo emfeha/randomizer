@@ -105,58 +105,18 @@ var sketch = __webpack_require__(/*! sketch */ "sketch");
 var UI = __webpack_require__(/*! sketch/ui */ "sketch/ui");
 
 var document = sketch.getSelectedDocument();
-var page = document.selectedPage;
 var selectedLayers = document.selectedLayers;
 var selectedCount = selectedLayers.length;
 var symbols = document.getSymbols();
 /* harmony default export */ __webpack_exports__["default"] = (function () {
-  var availableSymbolNames = [];
-  var availableSymbols = [];
-
-  if (selectedCount) {
-    availableSymbolNames.push('Selected symbol');
+  if (!selectedCount) {
+    UI.message('Please select symbol to randomize');
+    return;
   }
 
-  symbols.forEach(function (symbol) {
-    var item = {
-      name: symbol.name,
-      symbolId: symbol.symbolId
-    };
-    availableSymbolNames.push(symbol.name);
-    availableSymbols.push(item);
+  selectedLayers.forEach(function (layer) {
+    randomizeOverridableLayers(layer);
   });
-  UI.getInputFromUser("Please select symbol you want to randomize", {
-    type: UI.INPUT_TYPE.selection,
-    possibleValues: availableSymbolNames
-  }, function (err, value) {
-    if (err) {
-      // most likely the user canceled the input
-      return;
-    } else {
-      if (value === 'Selected symbol') {
-        selectedLayers.forEach(function (layer) {
-          randomizeOverridableLayers(layer);
-        });
-      } else {
-        createSymbol(value);
-      }
-    }
-  });
-
-  function createSymbol(selectedSymbol) {
-    var index = availableSymbolNames.indexOf(selectedSymbol);
-    var symbolId = availableSymbols[index].symbolId;
-    var symbolMaster = document.getSymbolMasterWithID(symbolId);
-    var instance = symbolMaster.createNewInstance();
-    var inserted = new sketch.SymbolInstance({
-      name: instance.name + ' Randomized',
-      parent: page,
-      symbolId: instance.symbolId
-    });
-    inserted.frame.width = instance.frame.width;
-    inserted.frame.height = instance.frame.height;
-    randomizeOverridableLayers(inserted);
-  }
 
   function randomizeOverridableLayers(master) {
     master.overrides.forEach(function (item) {

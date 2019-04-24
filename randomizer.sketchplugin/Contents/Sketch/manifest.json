@@ -4,18 +4,20 @@
   "icon": "icon.png",
   "commands": [
     {
+      "shortcut": "option cmd r",
       "name": "Randomizer",
       "identifier": "randomizer.my-command-identifier",
-      "script": "my-command.js"
+      "script": "randomizer.js"
     },
     {
+      "shortcut": "option cmd e",
       "name": "I'm feeling lucky",
       "identifier": "feeling-lucky.my-command-identifier",
       "script": "feeling-lucky.js"
     }
   ],
   "menu": {
-    "title": "Randomizer",
+    "title": "🦄 Randomizer",
     "items": [
       "randomizer.my-command-identifier",
       "feeling-lucky.my-command-identifier"
